@@ -218,7 +218,7 @@ GLint g_object_id_uniform;
 
 
 /////////////////////////////////////////////////////VARIAVEIS PARA CONTROLE DOS OBJETOS
-int g_NumBunnies = 4;
+int g_NumBunnies = 16;
 float g_RotationY = 0.0f;
 float g_RotationZ = 0.0f;
 
@@ -429,7 +429,7 @@ int main(int argc, char* argv[])
         DrawVirtualObject("the_sphere");*/
 
 
-        g_RotationY += M_PI_4 / 50;
+        g_RotationY += M_PI_4 / 100;
 
         if (g_RotationY >= 2 * M_PI){
                 g_RotationY = 0;
@@ -448,7 +448,7 @@ int main(int argc, char* argv[])
 
             //Posição e Rotação do coelho no mundo
             glm::mat4 bunny_base = Matrix_Rotate_Y(g_RotationY) * 
-                                    Matrix_Translate(x, sin(2 * (g_RotationY)) / 2, z) * 
+                                    Matrix_Translate(x, sin(4 * (angle + g_RotationY)) / 2, z) * 
                                     Matrix_Rotate_Y(-angle - M_PI/2);
 
             float raio_orbita = 0.3f;

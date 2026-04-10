@@ -6,8 +6,8 @@
 
 ## Dados do aluno
 
-- **Cartão UFRGS**: <mark>`<preencher>`</mark>
-- **Nome**: <mark>`<preencher>`</mark>
+- **Cartão UFRGS**: <mark>`<00588786>`</mark>
+- **Nome**: <mark>`<Henrique Wermann da Silva>`</mark>
 
 ## Passos que eu segui para resolver o problema especificado (em formato de *"prompt"*)
 
@@ -30,20 +30,26 @@
 > - Novamente, lembre-se que você *não pode utilizar ferramentas
 >   de IA para escrever este relatório*
 
-<mark>`<preencher>`</mark>
+<mark>`<- Inicialize os coelhos em cículo ao redor do eixo Y da origem.
+- Escale os coelhos para ficarem menores, rotancione sobre seus próprios eixo Y para olhar no sentido da rotação, translade para ficarem nas suas posições iniciais de x e z e com y variando com o seno da rotação sobre o Y da origem e rotacione sobre o Y da origem.
+- Escale as eferas para se parecerem com ovos.
+- Calcule o movimento dos ovos sendo y o seno da velocidade da orbita e z o cosseno da velocidade da orbita, multiplicados pelo raio.
+- Faça uma mudança de sistema de coordenadas, para que o movimeto dos ovos seja posicionado ao redor do coelho.
+- Translade os ovos para as posições calculadas.
+- Rotacione os coelhos cujos índices são multiplos de 4 em torno de seu próprio eixo Z. >`</mark>
 
 ## Principais dificuldades encontradas durante o desenvolvimento (formato livre)
 
-<mark>`<preencher>`</mark>
+<mark>`<Minha principal dificuldade foi fazer os ovos orbitarem o coelho. Primeiramente estava tentando rotacioná-los sobre o eixo x do coelho, mas eles descreviam um movimento errático e não ficava em pé. Então, passei a usar funções seno e cosseno para calcular suas posições e mudar o sistema de coordenadas para orbitar o coelho. >`</mark>
 
 ## Você acha que conseguiu resolver o problema de forma adequada?
 
-<mark>`<preencher>`</mark>
+<mark>`<Sim, os movimentos dos coelhos e ovos estão próximos aos do vídeo de exemplo.>`</mark>
 
 ## Se você quiser compartilhar mais alguma coisa, coloque aqui:
 
-<mark>`<preencher>`</mark>
+<mark>`<>`</mark>
 
 ## Se você possui alguma sugestão para o professor sobre esta atividade, coloque aqui:
 
-<mark>`<preencher>`</mark>
+<mark>`<>`</mark>

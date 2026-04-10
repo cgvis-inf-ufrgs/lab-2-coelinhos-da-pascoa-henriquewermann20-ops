@@ -215,6 +215,17 @@ GLint g_view_uniform;
 GLint g_projection_uniform;
 GLint g_object_id_uniform;
 
+
+
+/////////////////////////////////////////////////////VARIAVEIS PARA CONTROLE DOS OBJETOS
+int g_NumBunnies = 4;
+float g_RotationY = 0.0f;
+float g_RotationZ = 0.0f;
+
+std::vector<float> g_BunnyPosX;
+std::vector<float> g_BunnyPosZ;
+std::vector<float> g_BunnyAngle;
+
 int main(int argc, char* argv[])
 {
     // Inicializamos a biblioteca GLFW, utilizada para criar uma janela do
@@ -244,7 +255,7 @@ int main(int argc, char* argv[])
     // Criamos uma janela do sistema operacional, com 800 colunas e 600 linhas
     // de pixels, e com título "INF01047 ...".
     GLFWwindow* window;
-    window = glfwCreateWindow(800, 600, "INF01047 - Seu Cartao - Seu Nome", NULL, NULL);
+    window = glfwCreateWindow(800, 600, "INF01047 - 00588786 - Henrique Wermann da Silva", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -317,6 +328,17 @@ int main(int argc, char* argv[])
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
+
+
+    ////////////////////////////////////////////INICIALIZAÇÃO DOS OBJETOS
+    for (int i = 0; i < g_NumBunnies; i++)
+    {
+        float angle = (2.0f * M_PI * i) / g_NumBunnies;
+
+        g_BunnyAngle.push_back(angle);
+        g_BunnyPosX.push_back(1.1f * cos(angle));
+        g_BunnyPosZ.push_back(1.1f * sin(angle));
+    }
 
     // Ficamos em um loop infinito, renderizando, até que o usuário feche a janela
     while (!glfwWindowShouldClose(window))
@@ -401,16 +423,71 @@ int main(int argc, char* argv[])
         #define PLANE  2
 
         // Desenhamos o modelo da esfera
-        model = Matrix_Translate(-1.0f,0.0f,0.0f);
+        /*model = Matrix_Translate(-1.0f,0.0f,0.0f);
         glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
         glUniform1i(g_object_id_uniform, SPHERE);
-        DrawVirtualObject("the_sphere");
+        DrawVirtualObject("the_sphere");*/
 
-        // Desenhamos o modelo do coelho
-        model = Matrix_Translate(1.0f,0.0f,0.0f);
-        glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
-        glUniform1i(g_object_id_uniform, BUNNY);
-        DrawVirtualObject("the_bunny");
+
+        g_RotationY += M_PI_4 / 50;
+
+        if (g_RotationY >= 2 * M_PI){
+                g_RotationY = 0;
+            }
+
+        g_RotationZ += M_PI_4 / 20;
+
+        if (g_RotationZ >= 2 * M_PI){
+                g_RotationZ = 0;
+            }
+
+        for (int i = 0; i < g_NumBunnies; i++) {
+            float x = g_BunnyPosX[i];
+            float z = g_BunnyPosZ[i];
+            float angle = g_BunnyAngle[i];
+
+            //Posição e Rotação do coelho no mundo
+            glm::mat4 bunny_base = Matrix_Rotate_Y(g_RotationY) * 
+                                    Matrix_Translate(x, sin(2 * (g_RotationY)) / 2, z) * 
+                                    Matrix_Rotate_Y(-angle - M_PI/2);
+
+            float raio_orbita = 0.3f;
+            float vel_orbita = g_RotationY * 3.0f;
+
+            //Ovos
+            float y1 = sin(vel_orbita) * raio_orbita;
+            float z1 = cos(vel_orbita) * raio_orbita;
+
+            // ponto do ovo no mundo
+            glm::vec4 pos1 = bunny_base * glm::vec4(0.0f, y1, z1, 1.0f);
+            
+            glm::mat4 egg1_model = Matrix_Translate(pos1.x, pos1.y, pos1.z) * Matrix_Scale(0.06f, 0.08f, 0.06f);
+
+            float y2 = sin(vel_orbita + M_PI) * raio_orbita;
+            float z2 = cos(vel_orbita + M_PI) * raio_orbita;
+
+            glm::vec4 pos2 = bunny_base * glm::vec4(0.0f, y2, z2, 1.0f);
+
+            glm::mat4 egg2_model = Matrix_Translate(pos2.x, pos2.y, pos2.z) * Matrix_Scale(0.06f, 0.08f, 0.06f);
+
+            glUniform1i(g_object_id_uniform, SPHERE);
+            glUniformMatrix4fv(g_model_uniform, 1, GL_FALSE, glm::value_ptr(egg1_model));
+            DrawVirtualObject("the_sphere");
+
+            glUniformMatrix4fv(g_model_uniform, 1, GL_FALSE, glm::value_ptr(egg2_model));
+            DrawVirtualObject("the_sphere");
+
+            //coelho
+            glm::mat4 bunny_model = bunny_base * Matrix_Scale(0.17f, 0.17f, 0.17f);
+            
+            if(i % 4 == 0){
+                bunny_model *= Matrix_Rotate_Z(g_RotationZ);
+            }
+
+            glUniformMatrix4fv(g_model_uniform, 1, GL_FALSE, glm::value_ptr(bunny_model));
+            glUniform1i(g_object_id_uniform, BUNNY);
+            DrawVirtualObject("the_bunny");
+        }
 
         // Desenhamos o plano do chão
         model = Matrix_Translate(0.0f,-1.0f,0.0f) * Matrix_Scale(4.0f,1.0f,4.0f);
